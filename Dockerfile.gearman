@@ -1,0 +1,13 @@
+FROM ubuntu:14.04
+
+RUN apt-get update \
+    && apt-get install -y gearman libsqlite3-dev \
+    && apt-get clean && apt-get autoclean
+
+# gearmand --log-file=/var/log/gearmand.log --queue-type=libsqlite3 --libsqlite3-db=/var/log/factory.db
+
+CMD ["gearmand", "--log-file=/var/log/gearmand.log", "--queue-type=libsqlite3","--libsqlite3-db=/data/factory.db"]
+
+EXPOSE 4730
+
+VOLUME /data
