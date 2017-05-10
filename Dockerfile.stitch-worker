@@ -1,0 +1,27 @@
+FROM thonatos/opencv
+
+# FROM registry.cn-shenzhen.aliyuncs.com/implementsio/opencv
+
+#build stitch worker
+
+RUN mkdir /build
+
+COPY ./stitch-worker /build/stitch-worker
+
+RUN cd /build/stitch-worker \
+    && cmake . \
+    && make \
+    && cp stitch-workerd /usr/local/bin
+
+RUN echo "/usr/local/lib" >> /etc/ld.so.conf \
+    && ldconfig
+
+#clean build
+
+RUN rm -rf /build
+
+CMD /usr/local/bin/stitch-workerd
+
+#data storage
+
+VOLUME /data
